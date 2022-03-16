@@ -16,7 +16,9 @@ class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASTUBaseWeapon();
-	virtual void Fire();
+	virtual void StartFire();
+	virtual void StopFire();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,6 +35,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 		float Damage = 10.0f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float TimeBetweenShots = 0.1f;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float BulletSpread = 1.5f;
+
 	void MakeShot();
 
 	APlayerController* GetPlayerController();
@@ -41,4 +49,6 @@ public:
 	bool GetTraceData(FVector& TraceStart, FVector& TraceEnd);
 	void MakeHit(const FVector& TraceStart, const FVector& TraceEnd, FHitResult& HitResult);
 	void MakeDamage(const FHitResult& HitResult);
+private:
+	FTimerHandle ShotTimerHandle;
 };
